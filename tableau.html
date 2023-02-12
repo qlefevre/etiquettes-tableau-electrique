@@ -14,13 +14,21 @@
 			font-size: 9pt
 		}
 
+		.font-8 {
+			font-size: 8pt;
+		}
+
 		table {
 			border-collapse: collapse;
-			margin-top: 10px;
+			margin-top: 15px;
 		}
 
 		td {
 			width: 1.8cm;
+		}
+
+		td.col-2 {
+			width: 3.6cm;
 		}
 
 		.emplacement td {
@@ -59,19 +67,23 @@
 </head>
 
 <body>
-	<table id="table">
-		<tbody>
-			<tr class="icon">
-				<td v-for="module in modules"><img :src="srcImg(module)"></td>
-			</tr>
-			<tr class="application">
-				<td v-for="module in modules">{{module.app}}</td>
-			</tr>
-			<tr class="emplacement">
-				<td v-for="module in modules">{{module.loc}}</td>
-			</tr>
-		</tbody>
-	</table>
+	<div id="tableau">
+		<div v-for="rangee in rangees">
+			<table>
+				<tbody>
+					<tr class="icon">
+						<td v-for="module in rangee.modules" :class="modSize(module)"><img :src="srcImg(module)"></td>
+					</tr>
+					<tr class="application">
+						<td v-for="module in rangee.modules" :class="modSize(module)">{{module.app}}</td>
+					</tr>
+					<tr class="emplacement">
+						<td v-for="module in rangee.modules" :class="modSize(module)" v-html="loc(module)"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 	<table>
 		<tbody>
 			<tr class="icon">
@@ -130,31 +142,55 @@
 		createApp({
 			data() {
 				return {
-					modules: [
-						{ img: "prise", app: "Prise de courant", loc: "Salon" },
-						{ img: "prise", app: "Prise de courant", loc: "Cuisine" },
-						{ img: "chaudiere", app: "Chaudière", loc: "Garage" },
-						{ img: "eclairage", app: "Éclairage", loc: "Cuisine Salon" },
-						{ img: "eclairage", app: "Éclairage", loc: "Hall WC Garage" },
-						{ img: "machine-a-laver", app: "Machine à laver", loc: "Garage" },
-						{ img: "prise", app: "Prise 20A", loc: "Garage" },
-						{ app: "Non utilisé" },
-						{ img: "eclairage", app: "Télérupteur", loc: "Garage" },
-						{ img: "eclairage", app: "Télérupteur", loc: "Hall" },
-						{},
-						{},
-						{}
+					rangees: [
+						{
+							modules: [
+								{ img: "interrupteur-differentiel", app: "Interrupteur différentiel", loc: "Général", mod: 2 },
+								{ img: "interrupteur-differentiel", app: "Disjoncteur", loc: "Tableau Cuisine" },
+								{ img: "interrupteur-differentiel", app: "Disjoncteur", loc: "Tableau Principal" },
+								{ img: "prise", app: "Prise de courant", loc: "Ch. Garage" },
+								{ img: "prise", app: "Prise de courant", loc: "S<span class='font-8'>alle de </span>Bain\nCh. Rue\nCh. Jardin" },
+								{ img: "prise", app: "Prise de courant", loc: "Ch. Jardin\nBureau\nCh. Garage" },
+								{ img: "prise", app: "Prise de courant", loc: "Ch. Garage Garage" },
+								{ img: "eclairage", app: "Éclairage", loc: "S<span class='font-8'>alle de Bain</span> Ch. Rue\nCh. Jardin Bureau Sonnette" },
+								{ img: "eclairage", app: "Éclairage", loc: "Palier\nCh. Garage Grenier" },
+								{ img: "eclairage", app: "Télérupteur", loc: "Palier" },
+								{ img: "interphone", app: "Transformateur Sonnette", loc: "Hall", mod: 2 },
+							]
+						}, {
+							modules: [
+								{ img: "prise", app: "Prise de courant", loc: "Salon" },
+								{ img: "prise", app: "Prise de courant", loc: "Cuisine" },
+								{ img: "chaudiere", app: "Chaudière", loc: "Garage" },
+								{ img: "eclairage", app: "Éclairage", loc: "Cuisine Salon" },
+								{ img: "eclairage", app: "Éclairage", loc: "Hall\nWC\nGarage" },
+								{ img: "machine-a-laver", app: "Machine à laver", loc: "Garage" },
+								{ img: "prise", app: "Prise 20A", loc: "Garage" },
+								{ app: "Non utilisé" },
+								{ img: "eclairage", app: "Télérupteur", loc: "Garage" },
+								{ img: "eclairage", app: "Télérupteur", loc: "Hall" },
+								{},
+								{},
+								{}
+							]
+						}
 					]
+
 				}
 			},
 			methods: {
-
-				// Creating function
 				srcImg: function (module) {
 					return module.img ? 'img/' + module.img + '.png' : '';
+				},
+				modSize: function (module) {
+					return 'col-' + (module.mod ? module.mod : '1');
+				},
+				loc: function (module) {
+					if (!module.loc) return '';
+					return module.loc.replaceAll('\n', '<br>')
 				}
 			}
-		}).mount('#table');
+		}).mount('#tableau');
 
 	</script>
 </body>
