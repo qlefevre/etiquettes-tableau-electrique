@@ -57,6 +57,11 @@
 		.icon img {
 			filter: grayscale(100%);
 		}
+		
+		.data {
+			margin-top: 15px;
+			text-align:left;
+		}
 
 		@page {
 			size: A4 landscape;
@@ -72,7 +77,7 @@
 			<table>
 				<tbody>
 					<tr class="icon">
-						<td v-for="module in rangee.modules" :class="modSize(module)"><img :src="srcImg(module)"></td>
+						<td v-for="module in rangee.modules" :class="modSize(module)"><img :src="srcImg(module)" @click="changeIcon(module)"></td>
 					</tr>
 					<tr class="application">
 						<td v-for="module in rangee.modules" :class="modSize(module)">{{module.app}}</td>
@@ -83,7 +88,78 @@
 				</tbody>
 			</table>
 		</div>
+		
+		<div class="data">{{rangees}}
+		</div>
+
 	</div>
+	
+
+
+	<script>
+		const { createApp } = Vue;
+
+		createApp({
+			data() {
+				return {
+					icons: ["none","prise","eclairage","chaudiere","machine-a-laver","interrupteur-differentiel","interphone"],
+					rangees: [
+						{
+							modules: [
+								{ img: "interrupteur-differentiel", app: "Interrupteur différentiel", loc: "Général", mod: 2 },
+								{ img: "interrupteur-differentiel", app: "Disjoncteur", loc: "Tableau Cuisine" },
+								{ img: "interrupteur-differentiel", app: "Disjoncteur", loc: "Tableau Principal" },
+								{ img: "prise", app: "Prise de courant", loc: "Ch. Garage" },
+								{ img: "prise", app: "Prise de courant", loc: "S<span class='font-8'>alle de </span>Bain\nCh. Rue\nCh. Jardin" },
+								{ img: "prise", app: "Prise de courant", loc: "Ch. Jardin\nBureau\nCh. Garage" },
+								{ img: "prise", app: "Prise de courant", loc: "Ch. Garage Garage" },
+								{ img: "eclairage", app: "Éclairage", loc: "S<span class='font-8'>alle de Bain</span> Ch. Rue\nCh. Jardin Bureau Sonnette" },
+								{ img: "eclairage", app: "Éclairage", loc: "Palier\nCh. Garage Grenier" },
+								{ img: "eclairage", app: "Télérupteur", loc: "Palier" },
+								{ img: "interphone", app: "Transformateur Sonnette", loc: "Hall", mod: 2 },
+							]
+						}, {
+							modules: [
+								{ img: "prise", app: "Prise de courant", loc: "Salon" },
+								{ img: "prise", app: "Prise de courant", loc: "Cuisine" },
+								{ img: "chaudiere", app: "Chaudière", loc: "Garage" },
+								{ img: "eclairage", app: "Éclairage", loc: "Cuisine Salon" },
+								{ img: "eclairage", app: "Éclairage", loc: "Hall\nWC\nGarage" },
+								{ img: "machine-a-laver", app: "Machine à laver", loc: "Garage" },
+								{ img: "prise", app: "Prise 20A", loc: "Garage" },
+								{ app: "Non utilisé" },
+								{ img: "eclairage", app: "Télérupteur", loc: "Garage" },
+								{ img: "eclairage", app: "Télérupteur", loc: "Hall" },
+								{},
+								{},
+								{}
+							]
+						}
+					]
+
+				}
+			},
+			methods: {
+				srcImg: function (module) {
+					return module.img ? 'img/' + module.img + '.png' : '';
+				},
+				modSize: function (module) {
+					return 'col-' + (module.mod ? module.mod : '1');
+				},
+				loc: function (module) {
+					if (!module.loc) return '';
+					return module.loc.replaceAll('\n', '<br>')
+				},
+				changeIcon: function (module) {
+					let index = this.icons.indexOf(module.img)
+					module.img=this.icons[(index+1)%this.icons.length];
+				}
+			}
+		}).mount('#tableau');
+
+	</script>
+	
+		<!--
 	<table>
 		<tbody>
 			<tr class="icon">
@@ -134,65 +210,6 @@
 		</tbody>
 	</table>
 	<!-- DivTable.com -->
-
-
-	<script>
-		const { createApp } = Vue;
-
-		createApp({
-			data() {
-				return {
-					rangees: [
-						{
-							modules: [
-								{ img: "interrupteur-differentiel", app: "Interrupteur différentiel", loc: "Général", mod: 2 },
-								{ img: "interrupteur-differentiel", app: "Disjoncteur", loc: "Tableau Cuisine" },
-								{ img: "interrupteur-differentiel", app: "Disjoncteur", loc: "Tableau Principal" },
-								{ img: "prise", app: "Prise de courant", loc: "Ch. Garage" },
-								{ img: "prise", app: "Prise de courant", loc: "S<span class='font-8'>alle de </span>Bain\nCh. Rue\nCh. Jardin" },
-								{ img: "prise", app: "Prise de courant", loc: "Ch. Jardin\nBureau\nCh. Garage" },
-								{ img: "prise", app: "Prise de courant", loc: "Ch. Garage Garage" },
-								{ img: "eclairage", app: "Éclairage", loc: "S<span class='font-8'>alle de Bain</span> Ch. Rue\nCh. Jardin Bureau Sonnette" },
-								{ img: "eclairage", app: "Éclairage", loc: "Palier\nCh. Garage Grenier" },
-								{ img: "eclairage", app: "Télérupteur", loc: "Palier" },
-								{ img: "interphone", app: "Transformateur Sonnette", loc: "Hall", mod: 2 },
-							]
-						}, {
-							modules: [
-								{ img: "prise", app: "Prise de courant", loc: "Salon" },
-								{ img: "prise", app: "Prise de courant", loc: "Cuisine" },
-								{ img: "chaudiere", app: "Chaudière", loc: "Garage" },
-								{ img: "eclairage", app: "Éclairage", loc: "Cuisine Salon" },
-								{ img: "eclairage", app: "Éclairage", loc: "Hall\nWC\nGarage" },
-								{ img: "machine-a-laver", app: "Machine à laver", loc: "Garage" },
-								{ img: "prise", app: "Prise 20A", loc: "Garage" },
-								{ app: "Non utilisé" },
-								{ img: "eclairage", app: "Télérupteur", loc: "Garage" },
-								{ img: "eclairage", app: "Télérupteur", loc: "Hall" },
-								{},
-								{},
-								{}
-							]
-						}
-					]
-
-				}
-			},
-			methods: {
-				srcImg: function (module) {
-					return module.img ? 'img/' + module.img + '.png' : '';
-				},
-				modSize: function (module) {
-					return 'col-' + (module.mod ? module.mod : '1');
-				},
-				loc: function (module) {
-					if (!module.loc) return '';
-					return module.loc.replaceAll('\n', '<br>')
-				}
-			}
-		}).mount('#tableau');
-
-	</script>
 </body>
 
 </html>
