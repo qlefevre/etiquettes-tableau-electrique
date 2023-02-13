@@ -57,10 +57,11 @@
 		.icon img {
 			filter: grayscale(100%);
 		}
-		
-		.data {
-			margin-top: 15px;
-			text-align:left;
+
+		.data,
+		.editor {
+			margin-top: 30px;
+			text-align: left;
 		}
 
 		@page {
@@ -77,23 +78,36 @@
 			<table>
 				<tbody>
 					<tr class="icon">
-						<td v-for="module in rangee.modules" :class="modSize(module)"><img :src="srcImg(module)" @click="changeIcon(module)"></td>
+						<td v-for="module in rangee.modules" :class="modSize(module)"><img :src="srcImg(module)"
+								@click="changeIcon(module)"></td>
 					</tr>
 					<tr class="application">
-						<td v-for="module in rangee.modules" :class="modSize(module)" @click="changeApplication(module)">{{module.app}}</td>
+						<td v-for="module in rangee.modules" :class="modSize(module)"
+							@click="changeApplication(module)">{{module.app}}</td>
 					</tr>
 					<tr class="emplacement">
-						<td v-for="module in rangee.modules" :class="modSize(module)" v-html="loc(module)"></td>
+						<td v-for="module in rangee.modules" :class="modSize(module)" v-html="loc(module)"
+							@click="editModule(module)"></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-		
+
+		<div class="editor">
+			Application :
+			<select @change="editApplication($event)">
+				<option v-for="application in Object.keys(applications)" :value="application">{{application}}</option>
+			</select>
+			Emplacement : <input type="text" @change="editLocation($event)">
+		</div>
+
+
+
 		<div class="data">{{rangees}}
 		</div>
 
 	</div>
-	
+
 
 
 	<script>
@@ -102,8 +116,10 @@
 		createApp({
 			data() {
 				return {
-					icons: ["none","prise","eclairage","chaudiere","machine-a-laver","interrupteur-differentiel","interphone"],
-					applications: {" ":"none","Prise de courant":"prise","Éclairage":"eclairage","Télérupteur":"eclairage"}, 
+					rangeeIndex: 0,
+					moduleIndex: 0,
+					icons: ["none", "prise", "eclairage", "chaudiere", "machine-a-laver", "interrupteur-differentiel", "interphone"],
+					applications: { " ": "none", "Prise de courant": "prise", "Éclairage": "eclairage", "Télérupteur": "eclairage" },
 					rangees: [
 						{
 							modules: [
@@ -153,20 +169,45 @@
 				},
 				changeIcon: function (module) {
 					let index = this.icons.indexOf(module.img)
-					module.img=this.icons[(index+1)%this.icons.length];
+					module.img = this.icons[(index + 1) % this.icons.length];
 				},
-				changeApplication:  function (module) {
+				changeApplication: function (module) {
 					let appKeys = Object.keys(this.applications);
 					let index = appKeys.indexOf(module.app);
-					module.app = appKeys[(index+1)%appKeys.length];
+					module.app = appKeys[(index + 1) % appKeys.length];
 					module.img = this.applications[module.app];
+				},
+				editModule: function (module) {
+					let rangeeIndex = -1;
+					let moduleIndex = -1;
+					let found = false;
+					do {
+						rangeeIndex++;
+						moduleIndex = this.rangees[rangeeIndex].modules.indexOf(module);
+					} while (moduleIndex == -1)
+					//console.log('rangee ' + rangeeIndex + ' module ' + moduleIndex);
+					this.rangeeIndex = rangeeIndex;
+					this.moduleIndex = moduleIndex;
+				},
+				editApplication: function (event) {
+					val = event.target.value;
+					console.log(val);
+					let module = this.rangees[this.rangeeIndex].modules[this.moduleIndex];
+					module.app = val;
+					module.img = this.applications[val];
+				},
+				editLocation: function (event) {
+					val = event.target.value;
+					console.log(val);
+					let module = this.rangees[this.rangeeIndex].modules[this.moduleIndex];
+					module.loc = val;
 				},
 			}
 		}).mount('#tableau');
 
 	</script>
-	
-		<!--
+
+	<!--
 	<table>
 		<tbody>
 			<tr class="icon">
