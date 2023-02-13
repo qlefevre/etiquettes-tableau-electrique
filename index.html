@@ -80,7 +80,7 @@
 						<td v-for="module in rangee.modules" :class="modSize(module)"><img :src="srcImg(module)" @click="changeIcon(module)"></td>
 					</tr>
 					<tr class="application">
-						<td v-for="module in rangee.modules" :class="modSize(module)">{{module.app}}</td>
+						<td v-for="module in rangee.modules" :class="modSize(module)" @click="changeApplication(module)">{{module.app}}</td>
 					</tr>
 					<tr class="emplacement">
 						<td v-for="module in rangee.modules" :class="modSize(module)" v-html="loc(module)"></td>
@@ -103,6 +103,7 @@
 			data() {
 				return {
 					icons: ["none","prise","eclairage","chaudiere","machine-a-laver","interrupteur-differentiel","interphone"],
+					applications: {" ":"none","Prise de courant":"prise","Éclairage":"eclairage","Télérupteur":"eclairage"}, 
 					rangees: [
 						{
 							modules: [
@@ -153,7 +154,13 @@
 				changeIcon: function (module) {
 					let index = this.icons.indexOf(module.img)
 					module.img=this.icons[(index+1)%this.icons.length];
-				}
+				},
+				changeApplication:  function (module) {
+					let appKeys = Object.keys(this.applications);
+					let index = appKeys.indexOf(module.app);
+					module.app = appKeys[(index+1)%appKeys.length];
+					module.img = this.applications[module.app];
+				},
 			}
 		}).mount('#tableau');
 
