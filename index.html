@@ -118,8 +118,10 @@
 				return {
 					rangeeIndex: 0,
 					moduleIndex: 0,
-					icons: ["none", "prise", "eclairage", "chaudiere", "machine-a-laver", "interrupteur-differentiel", "interphone"],
-					applications: { " ": "none", "Prise de courant": "prise", "Éclairage": "eclairage", "Télérupteur": "eclairage" },
+					applications: {
+						" ": "none", "Prise de courant": "prise", "Éclairage": "eclairage", "Télérupteur": "eclairage", "Chaudière": "chaudiere",
+						"Machine à laver": "machine-a-laver", "Interrupteur différentiel": "interrupteur-differentiel", "Interphone": "interphone"
+					},
 					rangees: [
 						{
 							modules: [
@@ -156,6 +158,11 @@
 
 				}
 			},
+			computed: {
+				icons: function () {
+					return [...new Set(Object.values(this.applications))];
+				}
+			},
 			methods: {
 				srcImg: function (module) {
 					return module.img ? 'img/' + module.img + '.png' : '';
@@ -169,6 +176,8 @@
 				},
 				changeIcon: function (module) {
 					let index = this.icons.indexOf(module.img)
+					console.log(index);
+					console.log(this.icons.length);
 					module.img = this.icons[(index + 1) % this.icons.length];
 				},
 				changeApplication: function (module) {
