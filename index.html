@@ -113,7 +113,7 @@
 						<td v-for="(module,idxMod) in rangee.modules" :class="css(module,idxRg,idxMod)" v-html="loc(module)"></td>
 					</tr>
 					<tr class="select">
-						<td v-for="(module,idxMod) in rangee.modules"><a @click="editModule(module)">edit</a></td>
+						<td v-for="(module,idxMod) in rangee.modules"><a @click="selectModule(module)">edit</a></td>
 					</tr>
 				</tbody>
 			</table>
@@ -125,6 +125,9 @@
 				<option v-for="application in Object.keys(applications)" :value="application">{{application}}</option>
 			</select>
 			Emplacement : <input type="text" @change="editLocation($event)">
+			<select @change="editEmplacement($event)">
+				<option v-for="emplacement in emplacements" :value="emplacement">{{emplacement}}</option>
+			</select>
 		</div>
 
 
@@ -148,6 +151,7 @@
 						" ": "none", "Prise de courant": "prise", "Éclairage": "eclairage", "Télérupteur": "eclairage", "Chaudière": "chaudiere",
 						"Machine à laver": "machine-a-laver", "Interrupteur différentiel": "interrupteur-differentiel", "Interphone": "interphone"
 					},
+					emplacements: ['Atelier','Buanderie','Bureau','Cave','Cellier','Chambre','Couloir','Cuisine','Entrée','Extérieur','Garage','Grenier','Salle à manger','Salle de bain','Salon','WC'],
 					rangees: [
 						{
 							modules: [
@@ -196,7 +200,6 @@
 				css: function (module,rgIdx,modIdx) {
 					let css =  'col-' + (module.mod ? module.mod : '1');
 					css += (rgIdx == this.rangeeIndex && modIdx == this.moduleIndex) ? ' selected':'';
-					console.log(rgIdx+' == '+this.rangeeIndex+' && '+modIdx+' == '+this.moduleIndex);
 					return css;
 				},
 				loc: function (module) {
@@ -219,7 +222,7 @@
 						module.img = this.applications[module.app];
 					}
 				},
-				editModule: function (module) {
+				selectModule: function (module) {
 					let rangeeIndex = -1;
 					let moduleIndex = -1;
 					let found = false;
@@ -240,6 +243,12 @@
 					let module = this.rangees[this.rangeeIndex].modules[this.moduleIndex];
 					module.app = val;
 					module.img = this.applications[val];
+				},
+				editEmplacement: function (event) {
+					val = event.target.value;
+					console.log(val);
+					let module = this.rangees[this.rangeeIndex].modules[this.moduleIndex];
+					module.loc = val;
 				},
 				editLocation: function (event) {
 					val = event.target.value;
