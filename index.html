@@ -125,7 +125,7 @@
 				<option v-for="application in Object.keys(applications)" :value="application">{{application}}</option>
 			</select>
 			Emplacement : <input type="text" @change="editLocation($event)">
-			<select @change="editEmplacement($event)">
+			<select @change="editLocation($event)">
 				<option v-for="emplacement in emplacements" :value="emplacement">{{emplacement}}</option>
 			</select>
 		</div>
@@ -243,12 +243,6 @@
 					let module = this.rangees[this.rangeeIndex].modules[this.moduleIndex];
 					module.app = val;
 					module.img = this.applications[val];
-				},
-				editEmplacement: function (event) {
-					val = event.target.value;
-					console.log(val);
-					let module = this.rangees[this.rangeeIndex].modules[this.moduleIndex];
-					module.loc = val;
 				},
 				editLocation: function (event) {
 					val = event.target.value;
