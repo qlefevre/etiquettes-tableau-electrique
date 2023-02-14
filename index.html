@@ -106,8 +106,10 @@
 							@click="changeApplication(module)">{{module.app}}</td>
 					</tr>
 					<tr class="emplacement">
-						<td v-for="(module,idxMod) in rangee.modules" :class="css(module,idxRg,idxMod)" v-html="loc(module)"
-							@click="editModule(module)"></td>
+						<td v-for="(module,idxMod) in rangee.modules" :class="css(module,idxRg,idxMod)" v-html="loc(module)"></td>
+					</tr>
+					<tr class="select">
+						<td v-for="(module,idxMod) in rangee.modules"><a @click="editModule(module)">edit</a></td>
 					</tr>
 				</tbody>
 			</table>
@@ -198,16 +200,20 @@
 					return module.loc.replaceAll('\n', '<br>')
 				},
 				changeIcon: function (module) {
-					let index = this.icons.indexOf(module.img)
-					console.log(index);
-					console.log(this.icons.length);
-					module.img = this.icons[(index + 1) % this.icons.length];
+					if(this.isModuleSelected(module)){
+						let index = this.icons.indexOf(module.img)
+						console.log(index);
+						console.log(this.icons.length);
+						module.img = this.icons[(index + 1) % this.icons.length];
+					}
 				},
 				changeApplication: function (module) {
-					let appKeys = Object.keys(this.applications);
-					let index = appKeys.indexOf(module.app);
-					module.app = appKeys[(index + 1) % appKeys.length];
-					module.img = this.applications[module.app];
+					if(this.isModuleSelected(module)){
+						let appKeys = Object.keys(this.applications);
+						let index = appKeys.indexOf(module.app);
+						module.app = appKeys[(index + 1) % appKeys.length];
+						module.img = this.applications[module.app];
+					}
 				},
 				editModule: function (module) {
 					let rangeeIndex = -1;
@@ -220,6 +226,9 @@
 					//console.log('rangee ' + rangeeIndex + ' module ' + moduleIndex);
 					this.rangeeIndex = rangeeIndex;
 					this.moduleIndex = moduleIndex;
+				},
+				isModuleSelected: function(module){
+					return this.rangees[this.rangeeIndex].modules[this.moduleIndex] == module;
 				},
 				editApplication: function (event) {
 					val = event.target.value;
@@ -239,57 +248,7 @@
 
 	</script>
 
-	<!--
-	<table>
-		<tbody>
-			<tr class="icon">
-				<td><img src="img/prise.png"></td>
-				<td><img src="img/prise.png"></td>
-				<td><img src="img/chaudiere.png"></td>
-				<td><img src="img/eclairage.png"></td>
-				<td><img src="img/eclairage.png"></td>
-				<td><img src="img/machine-a-laver.png"></td>
-				<td><img src="img/prise.png"></td>
-				<td></td>
-				<td><img src="img/eclairage.png"></td>
-				<td><img src="img/eclairage.png"></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr class="application">
-				<td>Prise de courant</td>
-				<td>Prise de courant</td>
-				<td>Chaudière</td>
-				<td>Éclairage</td>
-				<td>Éclairage</td>
-				<td>Machine à laver</td>
-				<td>Prise 20A</td>
-				<td>Non utilisé</td>
-				<td>Télérupteur</td>
-				<td>Télérupteur</td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr class="emplacement">
-				<td>Salon</td>
-				<td>Cuisine</td>
-				<td>Garage</td>
-				<td>Cuisine Salon</td>
-				<td>Hall</br>WC</br>Garage</td>
-				<td>Garage</td>
-				<td>Garage</td>
-				<td></td>
-				<td>Garage</td>
-				<td>Hall</td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-		</tbody>
-	</table>
-	<!-- DivTable.com -->
+	
 </body>
 
 </html>
