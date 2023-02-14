@@ -54,6 +54,26 @@
 			font-weight: bold;
 		}
 
+		td.selected{
+			border-color: DarkOrange;
+			border-width: 2px;
+		}
+		.icon td.selected{
+    		border-top-style:solid;
+			border-left-style: solid;
+			border-right-style: solid;
+		}
+		.application td.selected{
+			border-left-style: solid;
+			border-right-style: solid;
+		}
+		.emplacement td.selected{
+    		border-bottom-style:solid;
+			border-left-style: solid;
+			border-right-style: solid;
+		}
+
+
 		.icon img {
 			filter: grayscale(100%);
 		}
@@ -74,19 +94,19 @@
 
 <body>
 	<div id="tableau">
-		<div v-for="rangee in rangees">
+		<div v-for="(rangee,idxRg) in rangees">
 			<table>
 				<tbody>
 					<tr class="icon">
-						<td v-for="module in rangee.modules" :class="modSize(module)"><img :src="srcImg(module)"
+						<td v-for="(module,idxMod) in rangee.modules" :class="css(module,idxRg,idxMod)"><img :src="srcImg(module)"
 								@click="changeIcon(module)"></td>
 					</tr>
 					<tr class="application">
-						<td v-for="module in rangee.modules" :class="modSize(module)"
+						<td v-for="(module,idxMod) in rangee.modules" :class="css(module,idxRg,idxMod)"
 							@click="changeApplication(module)">{{module.app}}</td>
 					</tr>
 					<tr class="emplacement">
-						<td v-for="module in rangee.modules" :class="modSize(module)" v-html="loc(module)"
+						<td v-for="(module,idxMod) in rangee.modules" :class="css(module,idxRg,idxMod)" v-html="loc(module)"
 							@click="editModule(module)"></td>
 					</tr>
 				</tbody>
@@ -167,8 +187,11 @@
 				srcImg: function (module) {
 					return module.img ? 'img/' + module.img + '.png' : '';
 				},
-				modSize: function (module) {
-					return 'col-' + (module.mod ? module.mod : '1');
+				css: function (module,rgIdx,modIdx) {
+					let css =  'col-' + (module.mod ? module.mod : '1');
+					css += (rgIdx == this.rangeeIndex && modIdx == this.moduleIndex) ? ' selected':'';
+					console.log(rgIdx+' == '+this.rangeeIndex+' && '+modIdx+' == '+this.moduleIndex);
+					return css;
 				},
 				loc: function (module) {
 					if (!module.loc) return '';
