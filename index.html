@@ -31,6 +31,22 @@
 			width: 3.6cm;
 		}
 
+		td.col-3 {
+			width: 5.4cm;
+		}
+
+		td.col-4 {
+			width: 7.2cm;
+		}
+
+		td.col-5 {
+			width: 9cm;
+		}
+
+		td.col-6 {
+			width: 10.8cm;
+		}
+
 		.emplacement td {
 			border-left: 1px solid white;
 		}
@@ -55,24 +71,29 @@
 		}
 
 
-		.application td.selected, .icon td.selected{
-			cursor: pointer; 
+		.application td.selected,
+		.icon td.selected {
+			cursor: pointer;
 		}
-		td.selected{
+
+		td.selected {
 			border-color: DarkOrange;
 			border-width: 2px;
 		}
-		.icon td.selected{
-    		border-top-style:solid;
+
+		.icon td.selected {
+			border-top-style: solid;
 			border-left-style: solid;
 			border-right-style: solid;
 		}
-		.application td.selected{
+
+		.application td.selected {
 			border-left-style: solid;
 			border-right-style: solid;
 		}
-		.emplacement td.selected{
-    		border-bottom-style:solid;
+
+		.emplacement td.selected {
+			border-bottom-style: solid;
 			border-left-style: solid;
 			border-right-style: solid;
 		}
@@ -102,31 +123,43 @@
 			<table>
 				<tbody>
 					<tr class="icon">
-						<td v-for="(module,idxMod) in rangee.modules" :class="css(module,idxRg,idxMod)"><img :src="srcImg(module)"
-								@click="changeIcon(module)"></td>
+						<td v-for="(module,idxMod) in rangee.modules" :class="css(module,idxRg,idxMod)"><img
+								:src="srcImg(module)" @click="changeIcon(module)"></td>
 					</tr>
 					<tr class="application">
 						<td v-for="(module,idxMod) in rangee.modules" :class="css(module,idxRg,idxMod)"
 							@click="changeApplication(module)">{{module.app}}</td>
 					</tr>
 					<tr class="emplacement">
-						<td v-for="(module,idxMod) in rangee.modules" :class="css(module,idxRg,idxMod)" v-html="loc(module)"></td>
+						<td v-for="(module,idxMod) in rangee.modules" :class="css(module,idxRg,idxMod)"
+							v-html="loc(module)"></td>
 					</tr>
 					<tr class="select">
-						<td v-for="(module,idxMod) in rangee.modules"><a @click="selectModule(module)">edit</a></td>
+						<td v-for="(module,idxMod) in rangee.modules"><a @click="selectModule(idxRg,idxMod)">edit</a>
+						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 
 		<div class="editor">
+			<a @click="addRow">Ajouter une rangée</a>
+
 			Application :
-			<select @change="editApplication($event)">
+			<select @change="editModule($event,'application')">
 				<option v-for="application in Object.keys(applications)" :value="application">{{application}}</option>
 			</select>
-			Emplacement : <input type="text" @change="editLocation($event)">
-			<select @change="editLocation($event)">
+			Emplacement : <input type="text" @change="editModule($event,'location')">
+			<select @change="editModule($event,'location')">
 				<option v-for="emplacement in emplacements" :value="emplacement">{{emplacement}}</option>
+			</select>
+			<select @change="editModule($event,'size')">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
 			</select>
 		</div>
 
@@ -151,7 +184,8 @@
 						" ": "none", "Prise de courant": "prise", "Éclairage": "eclairage", "Télérupteur": "eclairage", "Chaudière": "chaudiere",
 						"Machine à laver": "machine-a-laver", "Interrupteur différentiel": "interrupteur-differentiel", "Interphone": "interphone"
 					},
-					emplacements: ['Atelier','Buanderie','Bureau','Cave','Cellier','Chambre','Couloir','Cuisine','Entrée','Extérieur','Garage','Grenier','Salle à manger','Salle de bain','Salon','WC'],
+					emplacements: ['Atelier', 'Buanderie', 'Bureau', 'Cave', 'Cellier', 'Chambre', 'Couloir', 'Cuisine', 'Entrée', 'Extérieur', 'Garage', 'Grenier', 'Salle à manger', 'Salle de bain', 'Salon', 'WC'],
+					taille: 13,
 					rangees: [
 						{
 							modules: [
@@ -197,9 +231,9 @@
 				srcImg: function (module) {
 					return module.img ? 'img/' + module.img + '.png' : '';
 				},
-				css: function (module,rgIdx,modIdx) {
-					let css =  'col-' + (module.mod ? module.mod : '1');
-					css += (rgIdx == this.rangeeIndex && modIdx == this.moduleIndex) ? ' selected':'';
+				css: function (module, rgIdx, modIdx) {
+					let css = 'col-' + (module.mod ? module.mod : '1');
+					css += (rgIdx == this.rangeeIndex && modIdx == this.moduleIndex) ? ' selected' : '';
 					return css;
 				},
 				loc: function (module) {
@@ -207,55 +241,50 @@
 					return module.loc.replaceAll('\n', '<br>')
 				},
 				changeIcon: function (module) {
-					if(this.isModuleSelected(module)){
+					if (this.isModuleSelected(module)) {
 						let index = this.icons.indexOf(module.img)
-						console.log(index);
-						console.log(this.icons.length);
 						module.img = this.icons[(index + 1) % this.icons.length];
 					}
 				},
 				changeApplication: function (module) {
-					if(this.isModuleSelected(module)){
+					if (this.isModuleSelected(module)) {
 						let appKeys = Object.keys(this.applications);
 						let index = appKeys.indexOf(module.app);
 						module.app = appKeys[(index + 1) % appKeys.length];
 						module.img = this.applications[module.app];
 					}
 				},
-				selectModule: function (module) {
-					let rangeeIndex = -1;
-					let moduleIndex = -1;
-					let found = false;
-					do {
-						rangeeIndex++;
-						moduleIndex = this.rangees[rangeeIndex].modules.indexOf(module);
-					} while (moduleIndex == -1)
-					//console.log('rangee ' + rangeeIndex + ' module ' + moduleIndex);
-					this.rangeeIndex = rangeeIndex;
-					this.moduleIndex = moduleIndex;
+				selectModule: function (idxRg, idxMod) {
+					this.rangeeIndex = idxRg;
+					this.moduleIndex = idxMod;
+					console.log(idxRg);
+					console.log(idxMod);
 				},
-				isModuleSelected: function(module){
+				isModuleSelected: function (module) {
 					return this.rangees[this.rangeeIndex].modules[this.moduleIndex] == module;
 				},
-				editApplication: function (event) {
+				editModule: function (event, type) {
 					val = event.target.value;
-					console.log(val);
 					let module = this.rangees[this.rangeeIndex].modules[this.moduleIndex];
-					module.app = val;
-					module.img = this.applications[val];
+					if (type == 'application') {
+						module.app = val;
+						module.img = this.applications[val];
+					} else if (type == 'location') {
+						module.loc = val;
+					} else if (type == 'size') {
+						module.mod = val;
+					}
 				},
-				editLocation: function (event) {
-					val = event.target.value;
-					console.log(val);
-					let module = this.rangees[this.rangeeIndex].modules[this.moduleIndex];
-					module.loc = val;
-				},
+				addRow: function () {
+					let rangee = { modules: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}] }
+					this.rangees.push(rangee);
+				}
 			}
 		}).mount('#tableau');
 
 	</script>
 
-	
+
 </body>
 
 </html>
