@@ -138,7 +138,7 @@
 
 </head>
 
-<body>
+<body id="app">
 
 	<div class="container d-print-none">
 		<header class="d-flex flex-wrap justify-content-center pt-3 pb-1 border-bottom">
@@ -155,10 +155,12 @@
 				<li class="nav-item"><a href="#" class="nav-link">About</a></li>
 			</ul>
 		</header>
+
+		<a class="btn btn-primary" @click="addRow">Ajouter une rangée</a>
 	</div>
 
 
-	<div id="tableau" class="tableau-electrique">
+	<div class="tableau-electrique">
 		<div v-for="(rangee,idxRg) in rangees">
 			<table class="mx-auto">
 				<tbody>
@@ -186,27 +188,8 @@
 		</div>
 
 		<div class="container d-print-none">
-			<div class="editor">
-				<a @click="addRow">Ajouter une rangée</a>
 
-				Application :
-				<select @change="editModule($event,'application')">
-					<option v-for="application in Object.keys(applications)" :value="application">{{application}}
-					</option>
-				</select>
-				Emplacement : <input type="text" @change="editModule($event,'location')">
-				<select @change="editModule($event,'location')">
-					<option v-for="emplacement in emplacements" :value="emplacement">{{emplacement}}</option>
-				</select>
-				<select @change="editModule($event,'size')">
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
-					<option value="6">6</option>
-				</select>
-			</div>
+
 
 			<!-- Button trigger modal -->
 
@@ -215,7 +198,8 @@
 			</div>
 
 			<!-- Modal -->
-			<div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal modal-lg" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+				aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -224,7 +208,69 @@
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
-							...
+							<div class="row">
+								<div class="col-4">
+									<table class="mx-auto">
+										<tbody>
+											<tr class="icon">
+												<td :class="css(this.selectedModule)"><img
+														:src="srcImg(this.selectedModule)"
+														@click="changeIcon(this.selectedModule)"></td>
+											</tr>
+											<tr class="application">
+												<td :class="css(selectedModule)"
+													@click="changeApplication(selectedModule)">
+													{{selectedModule.app}}</td>
+											</tr>
+											<tr class="emplacement">
+												<td :class="css(selectedModule)" v-html="loc(selectedModule)"></td>
+											</tr>
+										</tbody>
+									</table>
+
+								</div>
+								<div class="col-8">
+									<div class="mb-2 row">
+										<label for="selectApplication"
+											class="col-sm-3 col-form-label">Application</label>
+										<div class="col-sm-9">
+											<select id="selectApplication" class="form-select"
+												@change="editModule($event,'application')">
+												<option v-for="application in Object.keys(applications)"
+													:value="application">
+													{{application}}</option>
+											</select>
+										</div>
+									</div>
+									<div class="mb-2 row">
+										<label for="selectEmplacement"
+											class="col-sm-3 col-form-label">Emplacement</label>
+										<div class="col-sm-9">
+											<select id="selectEmplacement" class="form-select"
+												@change="editModule($event,'location')">
+												<option v-for="emplacement in emplacements" :value="emplacement">
+													{{emplacement}}
+												</option>
+											</select>
+										</div>
+										<!-- <input type="text" @change="editModule($event,'location')"> -->
+									</div>
+									<div class="mb-2 row">
+										<label for="selectSize" class="col-sm-3 col-form-label">Taille module</label>
+										<div class="col-sm-9">
+											<select id="selectSize" class="form-select"
+												@change="editModule($event,'size')">
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
+												<option value="6">6</option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Appliquer</button>
@@ -310,13 +356,19 @@
 			computed: {
 				icons: function () {
 					return [...new Set(Object.values(this.applications))];
+				},
+				selectedModule: function () {
+					console.log('select ' + this.rangeeIndex);
+					console.log('module ' + this.moduleIndex);
+					return this.rangees[this.rangeeIndex].modules[this.moduleIndex];
 				}
+
 			},
 			methods: {
 				srcImg: function (module) {
 					return module.img ? 'img/' + module.img + '.png' : '';
 				},
-				css: function (module, rgIdx, modIdx) {
+				css: function (module, rgIdx = -1, modIdx = -1) {
 					let css = 'mod-' + (module.mod ? module.mod : '1');
 					css += (rgIdx == this.rangeeIndex && modIdx == this.moduleIndex) ? ' selected' : '';
 					return css;
@@ -348,6 +400,7 @@
 				isModuleSelected: function (module) {
 					return this.rangees[this.rangeeIndex].modules[this.moduleIndex] == module;
 				},
+
 				editModule: function (event, type) {
 					val = event.target.value;
 					let module = this.rangees[this.rangeeIndex].modules[this.moduleIndex];
@@ -365,7 +418,7 @@
 					this.rangees.push(rangee);
 				}
 			}
-		}).mount('#tableau');
+		}).mount('#app');
 
 	</script>
 
