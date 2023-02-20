@@ -143,7 +143,7 @@
 
 <body id="app">
 
-	<div class="container d-print-none">
+	<div class="container-md d-print-none">
 		<header class="d-flex flex-wrap justify-content-center pt-3 pb-1 border-bottom">
 			<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
 				<i class="bi bi-wrench-adjustable-circle fs-1 me-2"></i>
@@ -159,17 +159,32 @@
 			</ul>
 		</header>
 
-		<article id="presentation">
-			<span class="border-bottom fs-4 fw-normal">Présentation</span></br>
-			<p>Créer des étiquettes pour votre tableau électrique.</p>
-		</article>
+		<div class="row justify-content-center">
+			<article id="presentation" class="col-10">
 
-		<article id="etiquettes">
-			<span class="border-bottom fs-4 fw-normal">Étiquettes</span></br>
-			<a class="btn btn-secondary" @click="addRow">Ajouter une rangée</a>
-		</article>
+				<span class="fs-3 fw-normal">Créer des étiquettes pour votre tableau
+					électrique.</span></br>
 
+				<div class="col-6 mx-auto">
+					<p>Mode d'emploi</p>
+					<ol>
+						<li>Je choisi mon tableau</li>
+						<li>Je choisi ma taille d'étiquette : ancien format 5 cm / nouveau format 3 cm de hauteur</li>
+						<li>Je configure la taille et le nombres de modules par rangée</li>
+						<li>J'ajoute tous les modules</li>
+						<li>Je sauvegarde mon travail via le permalien</li>
+						<li>J'imprime la page (Ctrl+P)</li>
+					</ol>
+				</div>
 
+			</article>
+
+			<article id="etiquettes" class="col-10">
+				<span class="border-bottom fs-4 fw-normal">Étiquettes</span></br>
+				<a class="btn btn-secondary" @click="addRow">Ajouter une rangée</a>
+			</article>
+
+		</div>
 
 	</div>
 
@@ -201,7 +216,7 @@
 
 		</div>
 
-		<div class="container d-print-none">
+		<div class="container-md d-print-none">
 
 
 
@@ -298,14 +313,42 @@
 
 
 
-	<div class="container d-print-none">
-		<article id="modeles">
-			<span class="border-bottom fs-4 fw-normal">Modèles</span></br>
-			<a class="btn btn-secondary" @click="addRow">Ajouter une rangée</a>
-		</article>
+	<div class="container-md d-print-none">
+		<div class="row justify-content-center">
+			<article id="modeles" class="col-10">
+				<span class="border-bottom fs-4 fw-normal">Modèles</span></br>
+				Modèles
+			</article>
 
+			<article id="projet" class="col-10">
+				<span class="border-bottom fs-4 fw-normal">Le projet</span></br>
+				<div class="row justify-content-center">
+					<div class="col-4">
+						Je cherchais un moyen simple de créer une étiquette pour tableau électrique sur navigateur. Et
+						je ne
+						souhaitais pas passer par une application Android avec inscription obligatoire.
+					</div>
+					<div class="col-2">
+						Photo
+					</div>
+					<div class="col-4">
+						J'ai créé ce petit outil de génération d'étiquettes en pensant à mon frangin parti trop tôt.
+						Si cette page vous a été utile, faîtes un don à un organisme pour la recherche sur le cerveau.
 
+					</div>
 
+					<div class="row">
+						<div class="col-4 text-end my-auto pe-4"><a
+								href="https://don.institutducerveau-icm.org/b/mon-don"><img src="img/logo-icm.png"></a>
+						</div>
+						<div class="col-4 text-center fs-3 my-auto">1€ c'est toujours mieux que rien.
+							Merci à vous.</div>
+						<div class="col-4 text-start align-middle ps-4"><a
+								href="https://soutenir.frcneurodon.org/b/mon-don"><img src="img/logo-frc.png"></a></div>
+					</div>
+
+			</article>
+		</div>
 
 
 
