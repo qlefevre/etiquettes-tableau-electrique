@@ -136,6 +136,33 @@
 		@page {
 			size: A4 landscape;
 		}
+
+		.electric-panel {
+			background-size: cover;
+			background-position: center;
+		}
+
+		.old-electric-panel {
+			background-image: url('img/Vieux-tableau-électrique-sans-étiquettes.jpg');
+		}
+
+		.new-electric-panel {
+			background-image: url('img/Tableau-électrique-avec-étiquettes.jpg');
+		}
+
+		.slogan {
+			padding-top: 350px;
+			padding-bottom: 75px;
+		}
+
+		.carousel-slogan {
+			background-color: white;
+			color: black;
+			right: 0%;
+			left: 0%;
+			padding-top: 0.3rem;
+			padding-bottom: 0.1rem;
+		}
 	</style>
 
 
@@ -162,11 +189,29 @@
 		<div class="row justify-content-center">
 			<article id="presentation" class="col-10">
 
-				<span class="fs-3 fw-normal">Créer des étiquettes pour votre tableau
-					électrique.</span></br>
-
-				<div class="col-6 mx-auto">
-					<p>Mode d'emploi</p>
+				<div id="carouselTableaux" class="carousel slide text-center" data-bs-ride="carousel"
+					data-bs-pause="false" data-bs-interval="2000">
+					<div class="carousel-inner">
+						<div class="carousel-item active electric-panel old-electric-panel" data-bs-interval="2500">
+							<div class="slogan"></div>
+							<div class="carousel-caption d-none d-md-block carousel-slogan w-100">
+								<h3 class="display-6 fw-light">Votre tableau</h3>
+								<p class="lead">Créer des étiquettes pour votre tableau
+									électrique.</p>
+							</div>
+						</div>
+						<div class="carousel-item electric-panel new-electric-panel" data-bs-interval="5000">
+							<div class="slogan"></div>
+							<div class="carousel-caption d-none d-md-block carousel-slogan w-100">
+								<h3 class="display-6 fw-light">Votre <strong class="px-3">nouveau</strong> tableau</h3>
+								<p class="lead">Créer des étiquettes pour votre tableau
+									électrique.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-8 mx-auto py-5">
+					<h1 class="display-6 py-3">Mode d'emploi</h1>
 					<ol>
 						<li>Je choisi mon tableau</li>
 						<li>Je choisi ma taille d'étiquette : ancien format 5 cm / nouveau format 3 cm de hauteur</li>
@@ -323,19 +368,25 @@
 			<article id="projet" class="col-10">
 				<span class="border-bottom fs-4 fw-normal">Le projet</span></br>
 				<div class="row justify-content-center">
-					<div class="col-4">
+					<div class="col-8">
 						<p>
 							Je cherchais un moyen simple de créer une étiquette pour tableau électrique sur navigateur.
+							<br>Et je ne souhaitais pas passer par une application Android avec inscription
+							obligatoire.
 						</p>
-						<p> Et je ne souhaitais pas passer par une application Android avec inscription obligatoire.</p>
+					</div>
+				</div>
+				<div class="row justify-content-center">
+					<div class="col-4">
+						<p class="lead">Mon frangin est parti trop tôt.</p>
 					</div>
 					<div class="col-2">
 						Photo
 					</div>
 					<div class="col-4">
-						<p class="lead">J'ai créé ce petit outil de génération d'étiquettes en pensant à mon frangin
-							parti trop tôt.</p>
-						Si cette page vous a été utile, faîtes un don à un organisme pour la recherche sur le cerveau.
+
+						<p class="lead">Si cette page vous a été utile, faîtes un don à un organisme pour la recherche
+							sur le cerveau.</p>
 
 					</div>
 
