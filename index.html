@@ -301,7 +301,7 @@
 						<td v-for="(module,idxMod) in rangee.modules" :class="css(module,idxRg,idxMod)"
 							v-html="loc(module)"></td>
 					</tr>
-					<tr class="select">
+					<tr class="select d-print-none">
 						<td v-for="(module,idxMod) in rangee.modules">
 							<a @click="selectModule(idxRg,idxMod)" data-bs-toggle="modal"
 								data-bs-target="#exampleModal"><i class="edit-mod bi-pencil-fill"></i></a>
