@@ -192,6 +192,11 @@
 		.action-remove:hover {
 			background-color: var(--bs-danger)
 		}
+
+		.permalink {
+			width: 75%;
+			border-radius: 0px;
+		}
 	</style>
 
 
@@ -312,12 +317,16 @@
 
 
 			<!-- Button trigger modal -->
-
-
-			<div class="data">{{toData()}}
+			<div class="row my-5 d-flex justify-content-center">
+				<div class="col-8">
+					Pour sauvegarder votre travail, copier ce lien dans un email ou espace de votre choix :</br>
+					<a class="btn btn-secondary action-save" @click="copyPermalink()"><i class="bi bi-save"></i> Copier
+						le permalien</a>
+					<input type="text" class="form-control d-inline-block permalink mt-2 ms-2" :value="toPermaLink()"
+						readonly>
+				</div>
 			</div>
-			<div class="data">{{toData(true)}}
-			</div>
+
 
 			<!-- Modal -->
 			<div class="modal modal-lg" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -411,32 +420,50 @@
 			<article id="modeles" class="col-10">
 				<span class="border-bottom fs-2 display-6">Modèles</span>
 				<div class="row justify-content-center mt-4 fs-6 display-6 text-center">
+					<div class="col-3 align-self-end">
+						<a
+							href="?data=rg-(a~Interrupteur différentiel_m~2)(a~Machine à laver_l~Cuisine)(a~Prise de courant_l~Cuisine)(a~Prise de courant)(a~Éclairage)rg-(a~Interrupteur différentiel_m~2)(a~Four_l~Cuisine)(a~Prise de courant)(a~Éclairage)rg-(a~Interrupteur différentiel_m~2)(a~Plaques cuisson_l~Cuisine)(a~Lave linge_l~Buanderie)(a~Prise de courant)(a~Éclairage)#etiquettes">
+							<img src="img/LEGRAND-Drivia-3-rangées-39-modules-T4.webp" class="img-fluid">
+						</a>
+					</div>
+					<div class="col-3 align-self-end">
+						<a
+							href="?data=rg-(a~Interrupteur différentiel_m~2)(a~Four_l~Cuisine)(a~Prise de courant)(a~Prise de courant)(a~Éclairage)rg-(a~Interrupteur différentiel_m~2)(a~Lave vaisselle_l~Cuisine)(a~Prise de courant)(a~Éclairage)rg-(a~Interrupteur différentiel_m~2)(a~Plaques cuisson_l~Cuisine)(a~Lave linge_l~Buanderie)(a~Prise de courant)(a~Éclairage)#etiquettes">
+							<img src="img/SCHNEIDER-Resi9-3-rangées-39-modules-T4.jpg" class="img-fluid">
+						</a>
+					</div>
+					<div class="col-3 align-self-end">
+						<a href="#">
+							<img src="img/LEXMAN-3-rangées-39-modules-T4.jpg" class="img-fluid">
+						</a>
+					</div>
+				</div>
+				<div class="row justify-content-center mt-2 fs-6 display-6 text-center">
 					<div class="col-3">
-						<a href="#etiquettes?data=rg-(a~Interrupteur différentiel_m~2)(a~Machine à laver_l~Cuisine)(a~Prise de courant_l~Cuisine)(a~Prise de courant)(a~Éclairage)()()()()()()"
+						<a href="?data=rg-(a~Interrupteur différentiel_m~2)(a~Machine à laver_l~Cuisine)(a~Prise de courant_l~Cuisine)(a~Prise de courant)(a~Éclairage)rg-(a~Interrupteur différentiel_m~2)(a~Four_l~Cuisine)(a~Prise de courant)(a~Éclairage)rg-(a~Interrupteur différentiel_m~2)(a~Plaques cuisson_l~Cuisine)(a~Lave linge_l~Buanderie)(a~Prise de courant)(a~Éclairage)#etiquettes"
 							class="text-decoration-none text-reset">
-							<img src="img/LEGRAND-Drivia-3-rangées-39-modules-T4.webp" class="img-fluid"><br>
 							LEGRAND Drivia T4<br>
 							3 rangées 39 modules
 						</a>
 					</div>
 					<div class="col-3">
-						<a href="#" class="text-decoration-none text-reset">
-							<img src="img/SCHNEIDER-Resi9-3-rangées-39-modules-T4.jpg" class="img-fluid"><br>
+						<a href="?data=rg-(a~Interrupteur différentiel_m~2)(a~Four_l~Cuisine)(a~Prise de courant)(a~Prise de courant)(a~Éclairage)rg-(a~Interrupteur différentiel_m~2)(a~Lave vaisselle_l~Cuisine)(a~Prise de courant)(a~Éclairage)rg-(a~Interrupteur différentiel_m~2)(a~Plaques cuisson_l~Cuisine)(a~Lave linge_l~Buanderie)(a~Prise de courant)(a~Éclairage)#etiquettes"
+							class="text-decoration-none text-reset">
 							SCHNEIDER Resi9 T4<br>
 							3 rangées 39 modules
 						</a>
 					</div>
 					<div class="col-3">
 						<a href="#" class="text-decoration-none text-reset">
-							<img src="img/LEXMAN-3-rangées-39-modules-T4.jpg" class="img-fluid"><br>
 							LEXMAN T4<br>
 							3 rangées 39 modules
 						</a>
 					</div>
 				</div>
+
 			</article>
 
-			<article id="projet" class="col-10">
+			<article id="projet" class="col-10 mt-5">
 				<span class="border-bottom fs-2 display-6">Le projet</span>
 				<div class="row justify-content-center mt-4">
 					<div class="col-8">
@@ -605,8 +632,6 @@
 				selectModule: function (idxRg, idxMod) {
 					this.rangeeIndex = idxRg;
 					this.moduleIndex = idxMod;
-					console.log(idxRg);
-					console.log(idxMod);
 				},
 				isModuleSelected: function (module) {
 					return this.rangees[this.rangeeIndex].modules[this.moduleIndex] == module;
@@ -631,6 +656,32 @@
 				removeRow: function () {
 					this.rangees.pop();
 				},
+				checkRowSize(row) {
+					let rowSize = row.length;
+					for (module of row) {
+						if (module.mod != undefined && module.mod > 1) {
+							rowSize += module.mod - 1;
+						}
+					}
+					let missingMod = this.taille - rowSize;
+					if (missingMod > 0) {
+						while (missingMod > 0) {
+							row.push({});
+							missingMod--;
+						}
+					}
+
+				},
+				copyPermalink: function () {
+					console.log('-- json');
+					console.log(this.toData(true));
+					console.log('-- small');
+					console.log(this.toData());
+					navigator.clipboard.writeText(this.toPermaLink());
+				},
+				toPermaLink: function () {
+					return window.location.origin + window.location.pathname + '?data=' + this.toData();
+				},
 				toData: function (json) {
 					// On travaille sur une copie
 					let data = JSON.parse(JSON.stringify(this.rangees));
@@ -653,7 +704,9 @@
 						}
 					}
 					data = JSON.stringify(data);
-					if (json) {
+					// suppression des modules vides
+					data = data.replaceAll(',{}', '');
+					if (!json) {
 						data = data.replaceAll('{', '(').replaceAll('}', ')');
 						data = data.replaceAll('":"', '~').replaceAll('","', '_');
 						data = data.replaceAll(',', '').replaceAll('"', '');
@@ -680,27 +733,37 @@
 					// Ajout des images manquantes
 					for (rangee of json) {
 						for (module of rangee.modules) {
-							// suppression doublon
+							// ajout de l'image
 							if (!module.img) {
 								module.img = this.applications[module.app];
 							}
+							// passage du mod 
+							if (module.mod) {
+								module.mod = Number(module.mod);
+							}
 						}
+						// vérifie la taille de cette rangee
+						this.checkRowSize(rangee.modules);
 					}
-
-
 					return json;
 				}
 			},
 			mounted() {
-				console.log(this.rangees);
-				console.log(window.location.search);
-				let data = window.location.search.replace('?data=', '');
-				data = decodeURI(data);
-				while (this.rangees.length > 0) {
-					this.rangees.pop();
+
+				const urlParams = new URLSearchParams(window.location.search);
+				let data = urlParams.get('data');
+
+				if (data) {
+					data = decodeURI(data);
+
+					console.log(data);
+
+					while (this.rangees.length > 0) {
+						this.rangees.pop();
+					}
+
+					this.rangees = this.fromData(data);
 				}
-				console.log(this.fromData(data));
-				this.rangees = this.fromData(data);
 
 			}
 		}).mount('#app');
