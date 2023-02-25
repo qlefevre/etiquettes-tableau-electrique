@@ -281,7 +281,7 @@
 
 
 	<div class="tableau-electrique">
-		<div v-for="(rangee,idxRg) in rangees">
+		<div v-if="rangees.length > 0" v-for="(rangee,idxRg) in rangees">
 			<table class="mx-auto">
 				<tbody>
 					<tr class="icon">
@@ -314,7 +314,9 @@
 			<!-- Button trigger modal -->
 
 
-			<div class="data">{{toJson(rangees)}}
+			<div class="data">{{toData()}}
+			</div>
+			<div class="data">{{toData(true)}}
 			</div>
 
 			<!-- Modal -->
@@ -410,7 +412,8 @@
 				<span class="border-bottom fs-2 display-6">Modèles</span>
 				<div class="row justify-content-center mt-4 fs-6 display-6 text-center">
 					<div class="col-3">
-						<a href="#" class="text-decoration-none text-reset">
+						<a href="#etiquettes?data=rg-(a~Interrupteur différentiel_m~2)(a~Machine à laver_l~Cuisine)(a~Prise de courant_l~Cuisine)(a~Prise de courant)(a~Éclairage)()()()()()()"
+							class="text-decoration-none text-reset">
 							<img src="img/LEGRAND-Drivia-3-rangées-39-modules-T4.webp" class="img-fluid"><br>
 							LEGRAND Drivia T4<br>
 							3 rangées 39 modules
@@ -628,19 +631,76 @@
 				removeRow: function () {
 					this.rangees.pop();
 				},
-				toJson: function () {
+				toData: function (json) {
 					// On travaille sur une copie
 					let data = JSON.parse(JSON.stringify(this.rangees));
 					// On supprime les associations img/app non modifiées
 					for (rangee of data) {
 						for (module of rangee.modules) {
+							// suppression doublon
 							if (this.applications[module.app] == module.img) {
 								delete module.img;
 							}
+							// passage à un caractère
+							module.a = module.app;
+							module.i = module.img;
+							module.l = module.loc;
+							module.m = module.mod;
+							delete module.app;
+							delete module.img;
+							delete module.loc;
+							delete module.mod;
 						}
 					}
-					return JSON.stringify(data);
+					data = JSON.stringify(data);
+					if (json) {
+						data = data.replaceAll('{', '(').replaceAll('}', ')');
+						data = data.replaceAll('":"', '~').replaceAll('","', '_');
+						data = data.replaceAll(',', '').replaceAll('"', '');
+						data = data.replaceAll('(modules:[', 'rg-').replaceAll('])', '');
+						data = data.replace('[', '').replace(']', '').replaceAll(':', '~');
+					}
+
+					return data;
+				},
+				fromData: function (data, json = false) {
+					// Suppression reencodage
+					data = data.replaceAll('rg-', '(modules":[');
+					data = data.replaceAll('~', '":"').replaceAll('_', '","');
+					data = data.replaceAll('(', '{"').replaceAll(')', '"}');
+					data = data.replaceAll('{""}', '{}');
+					data = data.replaceAll('}{', '},{');
+					data = data.replaceAll('},{"modules"', '}]},{"modules"')
+					data = '[' + data + ']}]';
+					data = data.replaceAll('"a"', '"app"').replaceAll('"i"', '"img"');
+					data = data.replaceAll('"l"', '"loc"').replaceAll('"m"', '"mod"');
+
+					json = JSON.parse(data);
+
+					// Ajout des images manquantes
+					for (rangee of json) {
+						for (module of rangee.modules) {
+							// suppression doublon
+							if (!module.img) {
+								module.img = this.applications[module.app];
+							}
+						}
+					}
+
+
+					return json;
 				}
+			},
+			mounted() {
+				console.log(this.rangees);
+				console.log(window.location.search);
+				let data = window.location.search.replace('?data=', '');
+				data = decodeURI(data);
+				while (this.rangees.length > 0) {
+					this.rangees.pop();
+				}
+				console.log(this.fromData(data));
+				this.rangees = this.fromData(data);
 
 			}
 		}).mount('#app');
