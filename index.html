@@ -10,7 +10,6 @@
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-	<script src="https://unpkg.com/jsurl@0.1.5/index.js"></script>
 	<style>
 		/*body {
 			text-align: center;
@@ -315,7 +314,7 @@
 			<!-- Button trigger modal -->
 
 
-			<div class="data">{{JSON.stringify(rangees)}}
+			<div class="data">{{toJson(rangees)}}
 			</div>
 
 			<!-- Modal -->
@@ -409,18 +408,28 @@
 		<div class="row justify-content-center">
 			<article id="modeles" class="col-10">
 				<span class="border-bottom fs-2 display-6">Modèles</span>
-				<div class="row justify-content-center mt-4">
+				<div class="row justify-content-center mt-4 fs-6 display-6 text-center">
 					<div class="col-3">
-						<img src="img/LEGRAND-Drivia-3-rangées-39-modules-T4.webp" class="img-fluid"><br>
-						LEGRAND-Drivia-3-rangées-39-modules-T4
+						<a href="#" class="text-decoration-none text-reset">
+							<img src="img/LEGRAND-Drivia-3-rangées-39-modules-T4.webp" class="img-fluid"><br>
+							LEGRAND Drivia T4<br>
+							3 rangées 39 modules
+						</a>
 					</div>
 					<div class="col-3">
-						<img src="img/SCHNEIDER-Resi9-3-rangées-39-modules-T4.jpg" class="img-fluid">
+						<a href="#" class="text-decoration-none text-reset">
+							<img src="img/SCHNEIDER-Resi9-3-rangées-39-modules-T4.jpg" class="img-fluid"><br>
+							SCHNEIDER Resi9 T4<br>
+							3 rangées 39 modules
+						</a>
 					</div>
 					<div class="col-3">
-						<img src="img/LEXMAN-3-rangées-39-modules-T4.jpg" class="img-fluid">
+						<a href="#" class="text-decoration-none text-reset">
+							<img src="img/LEXMAN-3-rangées-39-modules-T4.jpg" class="img-fluid"><br>
+							LEXMAN T4<br>
+							3 rangées 39 modules
+						</a>
 					</div>
-
 				</div>
 			</article>
 
@@ -618,7 +627,21 @@
 				},
 				removeRow: function () {
 					this.rangees.pop();
+				},
+				toJson: function () {
+					// On travaille sur une copie
+					let data = JSON.parse(JSON.stringify(this.rangees));
+					// On supprime les associations img/app non modifiées
+					for (rangee of data) {
+						for (module of rangee.modules) {
+							if (this.applications[module.app] == module.img) {
+								delete module.img;
+							}
+						}
+					}
+					return JSON.stringify(data);
 				}
+
 			}
 		}).mount('#app');
 
