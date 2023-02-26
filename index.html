@@ -99,7 +99,9 @@
 
 
 		.application td.selected,
-		.icon td.selected {
+		.icon td.selected,
+		.modal .application,
+		.modal .icon {
 			cursor: pointer;
 		}
 
@@ -366,7 +368,7 @@
 											class="col-sm-3 col-form-label">Application</label>
 										<div class="col-sm-9">
 											<select id="selectApplication" class="form-select"
-												@change="editModule($event,'application')">
+												@change="editModule($event,'application')" :value="selectedModule.app">
 												<option v-for="application in Object.keys(applications)"
 													:value="application">
 													{{application}}</option>
@@ -378,7 +380,7 @@
 											class="col-sm-3 col-form-label">Emplacement</label>
 										<div class="col-sm-9">
 											<select id="selectEmplacement" class="form-select"
-												@change="editModule($event,'location')">
+												@change="editModule($event,'location')" :value="selectedModule.loc">
 												<option v-for="emplacement in emplacements" :value="emplacement">
 													{{emplacement}}
 												</option>
@@ -454,7 +456,8 @@
 						</a>
 					</div>
 					<div class="col-3">
-						<a href="#" class="text-decoration-none text-reset">
+						<a href="?data=rg-(a~Interrupteur différentiel_m~2)(a~Prise de courant_l~)(a~Éclairage)(a~Éclairage)(a~Éclairage)(a~Éclairage)rg-(a~Interrupteur différentiel_m~2)(a~Machine à laver_l~Buanderie)(a~Prise de courant)(a~Prise de courant)(a~Prise de courant)rg-(a~Interrupteur différentiel_m~2)(a~Machine à laver_l~)(a~Machine à laver_l~)(a~Machine à laver)(a~Prise de courant)#etiquettes"
+							class="text-decoration-none text-reset">
 							LEXMAN T4<br>
 							3 rangées 39 modules
 						</a>
@@ -553,7 +556,7 @@
 						" ": "none", "Prise de courant": "prise", "Éclairage": "eclairage", "Télérupteur": "eclairage", "Chaudière": "chaudiere",
 						"Machine à laver": "machine-a-laver", "Interrupteur différentiel": "interrupteur-differentiel", "Interphone": "interphone"
 					},
-					emplacements: ['Atelier', 'Buanderie', 'Bureau', 'Cave', 'Cellier', 'Chambre', 'Couloir', 'Cuisine', 'Entrée', 'Extérieur', 'Garage', 'Grenier', 'Salle à manger', 'Salle de bain', 'Salon', 'WC'],
+					emplacements: ['', 'Atelier', 'Buanderie', 'Bureau', 'Cave', 'Cellier', 'Chambre', 'Couloir', 'Cuisine', 'Entrée', 'Extérieur', 'Garage', 'Grenier', 'Salle à manger', 'Salle de bain', 'Salon', 'WC'],
 					taille: 13,
 					rangees: [
 						{
