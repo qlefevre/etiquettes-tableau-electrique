@@ -380,7 +380,7 @@
 
 								</div>
 								<div class="col-8">
-									<div class="mb-2 row">
+									<div class="mb-4 row">
 										<label for="selectApplication"
 											class="col-sm-3 col-form-label">Application</label>
 										<div class="col-sm-9">
@@ -390,9 +390,12 @@
 													:value="application">
 													{{application}}</option>
 											</select>
+											<input type="text" class="form-control mt-1" id="inputApplication"
+												@change="editModule($event,'applicationonly')"
+												:value="selectedModule.app">
 										</div>
 									</div>
-									<div class="mb-2 row">
+									<div class="mb-4 row">
 										<label for="selectEmplacement"
 											class="col-sm-3 col-form-label">Emplacement</label>
 										<div class="col-sm-9">
@@ -402,10 +405,12 @@
 													{{emplacement}}
 												</option>
 											</select>
+											<input type="text" class="form-control mt-1" id="inputEmplacement"
+												@change="editModule($event,'location')" :value="selectedModule.loc">
 										</div>
 										<!-- <input type="text" @change="editModule($event,'location')"> -->
 									</div>
-									<div class="mb-2 row">
+									<div class="mb-4 row">
 										<label for="selectSize" class="col-sm-3 col-form-label">Taille module</label>
 										<div class="col-sm-9">
 											<select id="selectSize" class="form-select"
@@ -671,6 +676,8 @@
 					if (type == 'application') {
 						module.app = val;
 						module.img = this.applications[val];
+					} else if (type == 'applicationonly') {
+						module.app = val;
 					} else if (type == 'location') {
 						module.loc = val;
 					} else if (type == 'size') {
