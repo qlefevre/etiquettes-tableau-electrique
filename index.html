@@ -423,7 +423,8 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Appliquer</button>
+							<button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+								@click="fixRowSize()">Appliquer</button>
 						</div>
 					</div>
 				</div>
@@ -698,6 +699,29 @@
 						}
 					}
 
+				},
+				fixRowSize() {
+					console.log('test');
+					let row = this.rangees[this.rangeeIndex].modules;
+					let rowSize = row.length;
+					for (module of row) {
+						if (module.mod != undefined && module.mod > 1) {
+							rowSize += module.mod - 1;
+						}
+					}
+					let missingMod = this.taille - rowSize;
+					if (missingMod > 0) {
+						while (missingMod > 0) {
+							row.push({});
+							missingMod--;
+						}
+					}
+					if (missingMod < 0) {
+						while (missingMod < 0) {
+							row.pop();
+							missingMod++;
+						}
+					}
 				},
 				copyPermalink: function () {
 					console.log('-- json');
