@@ -156,6 +156,12 @@
 			size: A4 landscape;
 		}
 
+		@media print {
+			td.selected {
+				border-width: 0px;
+			}
+		}
+
 		.electric-panel {
 			background-size: cover;
 			background-position: center;
@@ -181,6 +187,7 @@
 			left: 0%;
 			padding-top: 0.3rem;
 			padding-bottom: 0.1rem;
+			opacity: 0.92;
 		}
 
 		.fs-5p {
@@ -196,7 +203,7 @@
 		}
 
 		.permalink {
-			width: 75%;
+			width: 73%;
 			border-radius: 0px;
 		}
 
@@ -240,7 +247,7 @@
 					<a href="#modeles" class="nav-link text-decoration-none text-reset">Modèles</a>
 				</li>
 				<li class="nav-item">
-					<a href="#projet" class="nav-link text-decoration-none text-reset">Projet</a>
+					<a href="#mes-motivations" class="nav-link text-decoration-none text-reset">Mes motivations</a>
 				</li>
 			</ul>
 		</header>
@@ -269,15 +276,17 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-9 mx-auto py-5">
+				<div class="col-12 mx-auto pt-5">
 					<h1 class="display-6 py-3">Mode d'emploi</h1>
+				</div>
+				<div class="col-9 mx-auto pb-5 pt-2">
 					<ol class="fs-5 display-6">
-						<li>Je choisi mon tableau</li>
-						<li>Je choisi ma taille d'étiquette : ancien format 5 cm / nouveau format 3 cm de hauteur</li>
-						<li>Je configure la taille et le nombres de modules par rangée</li>
-						<li>J'ajoute tous les modules</li>
-						<li>Je sauvegarde mon travail via le permalien</li>
-						<li>J'imprime la page (Ctrl+P)</li>
+						<li>Je choisis mon tableau.</li>
+						<li>Je choisis ma taille d'étiquette : ancien format 5 cm / nouveau format 3 cm de hauteur.</li>
+						<li>Je configure la taille et le nombre de modules par rangée.</li>
+						<li>J'ajoute tous les modules.</li>
+						<li>Je sauvegarde mon travail via le lien permanent.</li>
+						<li>J'imprime la page (Ctrl+P).</li>
 					</ol>
 				</div>
 
@@ -339,10 +348,11 @@
 				<div class="col-8">
 					Pour sauvegarder votre travail, copier ce lien dans un email ou espace de votre choix :</br>
 					<a class="btn btn-secondary action-save" @click="copyPermalink()"><i
-							class="bi bi-box-arrow-up-right"></i> Copier
-						le permalien</a>
+							class="bi bi-box-arrow-up-right"></i> Copier le lien permanent</a>
 					<input type="text" class="form-control d-inline-block permalink mt-2 ms-2" :value="toPermaLink()"
 						readonly>
+					<a class="btn btn-secondary action-print mt-3" onclick="window.print()"><i
+							class="bi bi-printer"></i> Imprimer l'étiquette</a>
 				</div>
 			</div>
 
@@ -444,7 +454,9 @@
 		<div class="row justify-content-center">
 			<article id="modeles" class="col-10">
 				<span class="border-bottom fs-2 display-6">Modèles</span>
-				<div class="row justify-content-center mt-4 fs-6 display-6 text-center">
+				<p class="fs-5p display-6 pt-4 ps-5">Cliquez sur l'un des modèles ci-dessous pour commencer un nouveau
+					travail.</p>
+				<div class="row justify-content-center mt-2 fs-6 display-6 text-center">
 					<div class="col-3 align-self-end">
 						<a
 							href="?data=rg-(a~Interrupteur différentiel_m~2)(a~Lave linge_l~Buanderie)(a~Prise de courant_l~Cuisine)(a~Prise de courant)(a~Éclairage)rg-(a~Interrupteur différentiel_m~2)(a~Four_l~Cuisine)(a~Prise de courant)(a~Éclairage)rg-(a~Interrupteur différentiel_m~2)(a~Plaque de cuisson_l~Cuisine)(a~Lave linge_l~Buanderie)(a~Prise de courant)(a~Éclairage)#etiquettes">
@@ -490,8 +502,8 @@
 
 			</article>
 
-			<article id="projet" class="col-10 mt-5">
-				<span class="border-bottom fs-2 display-6">Le projet</span>
+			<article id="mes-motivations" class="col-10 mt-5">
+				<span class="border-bottom fs-2 display-6">Mes motivations</span>
 				<div class="row justify-content-center mt-4">
 					<div class="col-8">
 						<p class="fs-5p display-6">
@@ -566,7 +578,7 @@
 					<a href="#modeles" class="nav-link px-2 text-muted">Modèles</a>
 				</li>
 				<li class="nav-item">
-					<a href="#projet" class="nav-link px-2 text-muted">Projet</a>
+					<a href="#mes-motivations" class="nav-link px-2 text-muted">Mes motivations</a>
 				</li>
 
 			</ul>
