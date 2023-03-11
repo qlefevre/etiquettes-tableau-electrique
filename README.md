@@ -1,6 +1,9 @@
 # Étiquettes pour tableau électrique
 
+Site disponible à cette adresse :
 https://qlefevre.github.io/etiquettes-tableau-electrique/
+
+![](/img/Etiquettes-pour-tableau-%C3%A9lectrique-photo.jpg)
 
 ## Mode d'emploi
 
