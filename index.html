@@ -804,6 +804,7 @@
 					}
 				},
 				fromData: function (data, json = false) {
+					if(!json){
 					// Suppression reencodage
 					data = data.replaceAll('rg-', '(modules":[');
 					data = data.replaceAll('~', '":"').replaceAll('_', '","');
@@ -814,6 +815,7 @@
 					data = '[' + data + ']}]';
 					data = data.replaceAll('"a"', '"app"').replaceAll('"i"', '"img"');
 					data = data.replaceAll('"l"', '"loc"').replaceAll('"m"', '"mod"');
+					}
 
 					console.log(data);
 					json = JSON.parse(data);
@@ -828,6 +830,7 @@
 
 				const urlParams = new URLSearchParams(window.location.search);
 				let data = urlParams.get('data');
+				let json = urlParams.has('json');
 
 				if (data) {
 					data = decodeURI(data);
@@ -838,7 +841,7 @@
 						this.rangees.pop();
 					}
 
-					this.rangees = this.fromData(data);
+					this.rangees = this.fromData(data,json);
 				} else {
 					this.addImageAndCheckSize(this.rangees);
 				}
