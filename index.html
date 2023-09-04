@@ -750,7 +750,7 @@
 					navigator.clipboard.writeText(this.toPermaLink());
 				},
 				toPermaLink: function () {
-					return window.location.origin + window.location.pathname + '?data=' + this.toData();
+					return window.location.origin + window.location.pathname + '?json&data=' + this.toData(true);
 				},
 				toData: function (json) {
 					// On travaille sur une copie
