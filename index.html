@@ -161,6 +161,10 @@
 				border-width: 0px;
 			}
 		}
+		
+		.rangee-0{
+			page-break-before: always;
+		}
 
 		.electric-panel {
 			background-size: cover;
@@ -314,7 +318,7 @@
 
 	<div class="tableau-electrique">
 		<div v-if="rangees.length > 0" v-for="(rangee,idxRg) in rangees">
-			<table class="mx-auto">
+			<table :class="'mx-auto rangee-'+(idxRg%3)">
 				<tbody>
 					<tr class="icon">
 						<td v-for="(module,idxMod) in rangee.modules" :class="css(module,idxRg,idxMod)"><img
