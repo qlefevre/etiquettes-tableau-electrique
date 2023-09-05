@@ -18,6 +18,6 @@ https://qlefevre.github.io/etiquettes-tableau-electrique/
 
 [Étiquettes pour tableau électrique](https://qlefevre.github.io/etiquettes-tableau-electrique/) permet de créer des :
 
-- [Étiquettes pour tableau Schneider Resi9](https://qlefevre.github.io/etiquettes-tableau-electrique/)
-- [Étiquettes pour tableau Legrand Drivia](https://qlefevre.github.io/etiquettes-tableau-electrique/)
-- [Étiquettes pour tableau Hager](https://qlefevre.github.io/etiquettes-tableau-electrique/)
+- [Étiquettes pour tableau Schneider Resi9](https://qlefevre.github.io/etiquettes-tableau-electrique/#modeles)
+- [Étiquettes pour tableau Legrand Drivia](https://qlefevre.github.io/etiquettes-tableau-electrique/#modeles)
+- [Étiquettes pour tableau Hager](https://qlefevre.github.io/etiquettes-tableau-electrique/#modeles)
