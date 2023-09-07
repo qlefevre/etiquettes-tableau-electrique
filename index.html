@@ -97,6 +97,20 @@
 			font-weight: bold;
 		}
 
+		.emplacement-bleu{
+			background-color: #186b9c;
+		}
+		.emplacement-ocre{
+			background-color: #e49d21;
+		}
+		.emplacement-violet{
+			background-color: #772581;
+		}
+		.emplacement-bordeau{
+			background-color: #8c182b;
+		}
+		
+
 
 		.application td.selected,
 		.icon td.selected,
@@ -329,7 +343,7 @@
 							@click="changeApplication(module)">{{module.app}}</td>
 					</tr>
 					<tr class="emplacement">
-						<td v-for="(module,idxMod) in rangee.modules" :class="css(module,idxRg,idxMod)"
+						<td v-for="(module,idxMod) in rangee.modules" :class="cssModuleColor(module,idxRg,idxMod)"
 							v-html="loc(module)"></td>
 					</tr>
 					<tr class="select d-print-none">
@@ -435,6 +449,19 @@
 												<option value="4">4</option>
 												<option value="5">5</option>
 												<option value="6">6</option>
+											</select>
+										</div>
+									</div>
+									<div class="mb-4 row">
+										<label for="selectSize" class="col-sm-3 col-form-label">Couleur module</label>
+										<div class="col-sm-9">
+											<select id="selectColor" class="form-select"
+												@change="editModule($event,'color')">
+												<option value=""></option>
+												<option value="bleu">Bleu</option>
+												<option value="ocre">Ocre</option>
+												<option value="violet">Violet</option>
+												<option value="bordeau">Bordeau</option>
 											</select>
 										</div>
 									</div>
@@ -660,6 +687,11 @@
 					css += (rgIdx == this.rangeeIndex && modIdx == this.moduleIndex) ? ' selected' : '';
 					return css;
 				},
+				cssModuleColor: function (module, rgIdx = -1, modIdx = -1) {
+					let css = this.css(module,rgIdx,modIdx);
+					css +=' emplacement-' + (module.col ? module.col : 'default');
+					return css;
+				},
 				loc: function (module) {
 					if (!module.loc) return '';
 					return module.loc.replaceAll('\n', '<br>')
@@ -698,6 +730,8 @@
 						module.loc = val;
 					} else if (type == 'size') {
 						module.mod = val;
+					} else if( type == 'color'){
+						module.col = val;
 					}
 				},
 				addRow: function () {
@@ -766,15 +800,21 @@
 							if (this.applications[module.app] == module.img) {
 								delete module.img;
 							}
+							// suppression couleur
+							if (module.col == ""){
+								delete module.col;
+							}
 							// passage à un caractère
 							module.a = module.app;
 							module.i = module.img;
 							module.l = module.loc;
 							module.m = module.mod;
+							module.c = module.col;
 							delete module.app;
 							delete module.img;
 							delete module.loc;
 							delete module.mod;
+							delete module.col;
 						}
 					}
 					data = JSON.stringify(data);
@@ -809,18 +849,18 @@
 				},
 				fromData: function (data, json = false) {
 					if(!json){
-					// Suppression reencodage
-					data = data.replaceAll('rg-', '(modules":[');
-					data = data.replaceAll('~', '":"').replaceAll('_', '","');
-					data = data.replaceAll('(', '{"').replaceAll(')', '"}');
-					data = data.replaceAll('{""}', '{}');
-					data = data.replaceAll('}{', '},{');
-					data = data.replaceAll('},{"modules"', '}]},{"modules"')
-					data = '[' + data + ']}]';
+						// Suppression reencodage
+						data = data.replaceAll('rg-', '(modules":[');
+						data = data.replaceAll('~', '":"').replaceAll('_', '","');
+						data = data.replaceAll('(', '{"').replaceAll(')', '"}');
+						data = data.replaceAll('{""}', '{}');
+						data = data.replaceAll('}{', '},{');
+						data = data.replaceAll('},{"modules"', '}]},{"modules"')
+						data = '[' + data + ']}]';
 					}
 					data = data.replaceAll('"a"', '"app"').replaceAll('"i"', '"img"');
 					data = data.replaceAll('"l"', '"loc"').replaceAll('"m"', '"mod"');
-					
+					data = data.replaceAll('"c"', '"col"')
 
 					console.log(data);
 					json = JSON.parse(data);
