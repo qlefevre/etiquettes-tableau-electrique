@@ -12,11 +12,6 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 	<style>
-		/*body {
-			text-align: center;
-			vertical-align: middle;
-			font-size: 9pt
-		}*/
 
 		.btn {
 			border-radius: 0px;
@@ -80,16 +75,46 @@
 		}
 
 		.icon {
+			border-top: 1px solid black;
 			height: 1.8cm;
-			border-top: 1px solid black
 		}
-
 		.application {
 			height: 1cm;
 		}
-
 		.emplacement {
 			height: 2.2cm;
+		}
+
+		@media print {
+			.etiquettes-3cm .icon {
+				height: 1cm;
+			}
+			.etiquettes-3cm .application {
+				height: 0.7cm;
+			}
+			.etiquettes-3cm .emplacement {
+				height: 1.30cm;
+			}
+
+			.etiquettes-3cm-app .icon {
+				height: 1.8cm;
+			}
+			.etiquettes-3cm-app .application {
+				height: 1.2cm;
+			}
+			.etiquettes-3cm-app .emplacement {
+				display:none;
+			}
+
+			.etiquettes-5cm .icon {
+				height: 1.8cm;
+			}
+			.etiquettes-5cm .application {
+				height: 1cm;
+			}
+			.etiquettes-5cm .emplacement {
+				height: 2.2cm;
+			}
 		}
 
 		.emplacement {
@@ -343,7 +368,7 @@
 	</div>
 
 
-	<div class="tableau-electrique">
+	<div :class="'tableau-electrique etiquettes-'+format">
 		<div v-if="rangees.length > 0" v-for="(rangee,idxRg) in rangees">
 			<table :class="'mx-auto rangee-'+(idxRg%3)">
 				<tbody>
@@ -371,9 +396,6 @@
 		</div>
 
 		<div class="container-md d-print-none">
-
-
-
 			<!-- Button trigger modal -->
 			<div class="row my-5 d-flex justify-content-center">
 				<div class="col-8">
@@ -602,11 +624,10 @@
 
 
 
-		<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top d-print-none">
+		<footer class="d-flex flex-wrap justify-content-between align-items-center py-0 mt-5 mb-3 border-top d-print-none">
 
 			<div class="col-md-8 d-flex align-items-center">
-				<img src="https://raw.githubusercontent.com/qlefevre/etiquettes-tableau-electrique/main/img/electric-panel-64.png"
-					class="logo" />
+				<i class="bi bi-wrench-adjustable-circle fs-1 me-2"></i>
 				<span class="mb-3 mb-md-0 text-muted">
 					2023 <a class="text-decoration-none text-reset"
 						href="https://qlefevre.github.io/etiquettes-tableau-electrique/">Étiquettes pour tableau
@@ -641,6 +662,7 @@
 		createApp({
 			data() {
 				return {
+					format: '3cm',
 					rangeeIndex: 0,
 					moduleIndex: 0,
 					applications: {
