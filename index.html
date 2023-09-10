@@ -85,6 +85,10 @@
 			height: 2.2cm;
 		}
 
+		.etiquette-select{	
+			width: 17%;
+		}
+
 		@media print {
 			.etiquettes-3cm .icon {
 				height: 1cm;
@@ -101,6 +105,7 @@
 			}
 			.etiquettes-3cm-app .application {
 				height: 1.2cm;
+				border-bottom: 1px solid black;
 			}
 			.etiquettes-3cm-app .emplacement {
 				display:none;
@@ -352,7 +357,16 @@
 				<span class="border-bottom fs-2 display-6">Étiquettes</span>
 				<div class="row my-4 ">
 					<div class="col-12 d-flex justify-content-end">
-						<a class="btn btn-secondary action-add" @click="addRow"><i class="bi bi-plus-square"></i>
+						<label for="hauteurEtiquette" class="col-form-label">Hauteur étiquette</label>
+						
+						<select id="hauteurEtiquette" class="form-select ms-2 etiquette-select" v-model="format">
+							<option value="3cm">3cm</option>
+							<option value="3cm-app">3cm (application)</option>
+							<option value="5cm">5cm</option>
+						</select>
+						
+
+						<a class="btn btn-secondary ms-2 action-add" @click="addRow"><i class="bi bi-plus-square"></i>
 							Ajouter une
 							rangée</a>
 						<a class="btn btn-secondary ms-2 action-remove" @click="removeRow"><i
@@ -476,7 +490,7 @@
 									<div class="mb-4 row">
 										<label for="selectSize" class="col-sm-3 col-form-label">Taille module</label>
 										<div class="col-sm-9">
-											<select id="selectSize" class="form-select"
+											<select id="selectSize" class="form-select" v-model="selectedModule.mod"
 												@change="editModule($event,'size')">
 												<option value="1">1</option>
 												<option value="2">2</option>
@@ -490,7 +504,7 @@
 									<div class="mb-4 row">
 										<label for="selectSize" class="col-sm-3 col-form-label">Couleur module</label>
 										<div class="col-sm-9">
-											<select id="selectColor" class="form-select"
+											<select id="selectColor" class="form-select" v-model="selectedModule.col"
 												@change="editModule($event,'color')">
 												<option value=""></option>
 												<option value="bleu">Bleu</option>
@@ -827,7 +841,7 @@
 					navigator.clipboard.writeText(this.toPermaLink());
 				},
 				toPermaLink: function () {
-					return window.location.origin + window.location.pathname + '?json&data=' + this.toData(true);
+					return window.location.origin + window.location.pathname + '?json&format='+this.format+'&data=' + this.toData(true);
 				},
 				toData: function (json) {
 					// On travaille sur une copie
@@ -915,7 +929,10 @@
 				const urlParams = new URLSearchParams(window.location.search);
 				let data = urlParams.get('data');
 				let json = urlParams.has('json');
-
+				let format = urlParams.get('format');
+				if(format){
+					this.format = format;
+				}
 				if (data) {
 					data = decodeURI(data);
 
