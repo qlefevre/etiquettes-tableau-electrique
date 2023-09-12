@@ -282,6 +282,14 @@
 				max-width: none;
 			}
 		}
+
+		/*forcer l'impression de la couleur pour la localisation*/
+		@media print {
+    		* {
+        		-webkit-print-color-adjust: exact;
+				print-color-adjust: exact;
+    		}
+		}
 	</style>
 
 
