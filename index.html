@@ -890,6 +890,9 @@
 						data = data.replace('[', '').replace(']', '').replaceAll(':', '~');
 					}
 
+					// Encode les données
+					data = encodeURIComponent(data);
+
 					return data;
 				},
 				addImageAndCheckSize(rangees) {
